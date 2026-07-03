@@ -1,3 +1,4 @@
+require("./server");
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const express = require("express");
 const bodyParser = require("body-parser");
