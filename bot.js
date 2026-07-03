@@ -81,16 +81,18 @@ app.post("/recrutement", async (req, res) => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isButton()) return;
 
-  if (interaction.customId === "accept") {
+  const [action, id] = interaction.customId.split("_");
+
+  if (action === "accept") {
     await interaction.reply({
-      content: "✅ Candidature ACCEPTÉE",
+      content: `✅ Candidature ${id} ACCEPTÉE`,
       ephemeral: true
     });
   }
 
-  if (interaction.customId === "refuse") {
+  if (action === "refuse") {
     await interaction.reply({
-      content: "❌ Candidature REFUSÉE",
+      content: `❌ Candidature ${id} REFUSÉE`,
       ephemeral: true
     });
   }
