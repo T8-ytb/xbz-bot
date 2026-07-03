@@ -40,33 +40,51 @@ app.post("/recrutement", async (req, res) => {
 
     const data = req.body;
 
+    // ID unique propre
+    const id = `XBZ-${Date.now()}`;
+
     const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
+    const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
 
     if (!channel) {
       console.log("❌ Salon recrutement introuvable");
       return res.status(500).send("Channel not found");
     }
 
+    // =========================
+    // EMBED RECRUTEMENT (PROPRE)
+    // =========================
     const embed = new EmbedBuilder()
       .setTitle("🦇 NOUVELLE CANDIDATURE XBZ")
       .setColor(0xff7a00)
+      .setDescription(`🆔 ID : **${id}**`)
       .addFields(
-        { name: "Nom", value: data.nom || "N/A", inline: true },
-        { name: "Âge", value: data.age || "N/A", inline: true },
-        { name: "Discord", value: data.discord || "N/A", inline: false },
-        { name: "Pseudo", value: data.pseudo || "N/A", inline: true },
-        { name: "Jeu", value: data.jeu || "N/A", inline: true },
-        { name: "Rang", value: data.rang || "N/A", inline: true },
-        { name: "Motivation", value: data.motiv || "N/A", inline: false }
+        { name: "👤 Nom", value: data.nom || "N/A", inline: true },
+        { name: "🎂 Âge", value: data.age || "N/A", inline: true },
+        { name: "💬 Discord", value: data.discord || "N/A", inline: false },
+        { name: "🎮 Pseudo", value: data.pseudo || "N/A", inline: true },
+        { name: "🕹 Jeu", value: data.jeu || "N/A", inline: true },
+        { name: "🏆 Rang", value: data.rang || "N/A", inline: true },
+        { name: "🧠 Motivation", value: data.motiv || "N/A" }
       )
+      .setFooter({ text: "XBZ Recrutement System" })
       .setTimestamp();
 
     await channel.send({ embeds: [embed] });
 
-    // LOGS
-    const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
+    // =========================
+    // LOGS COMPLETS
+    // =========================
     if (logChannel) {
-      logChannel.send(`📩 Nouvelle candidature de **${data.nom || "inconnu"}**`);
+      await logChannel.send({
+        content:
+`📩 **Nouvelle candidature reçue**
+
+🆔 ID : ${id}
+👤 Nom : ${data.nom || "N/A"}
+🎮 Pseudo : ${data.pseudo || "N/A"}
+🎂 Âge : ${data.age || "N/A"}`
+      });
     }
 
     console.log("📨 ENVOYÉ SUR DISCORD");
