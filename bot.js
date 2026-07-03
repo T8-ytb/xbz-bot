@@ -82,7 +82,8 @@ app.post("/recrutement", async (req, res) => {
     res.status(500).send("Erreur serveur");
   }
 });
-
+console.log("📩 DATA REÇUE :", req.body);
+console.log("📢 ENVOI SALON :", STAFF_CHANNEL_ID);
 // ---------------- BOUTONS STAFF ----------------
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isButton()) return;
