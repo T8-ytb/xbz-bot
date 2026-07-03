@@ -62,17 +62,6 @@ app.post("/recrutement", async (req, res) => {
     return res.sendStatus(500);
   }
 });
-
-    console.log("📨 ENVOYÉ SUR DISCORD");
-
-    res.sendStatus(200);
-
-  } catch (err) {
-    console.error("❌ ERREUR :", err);
-    res.status(500).send("Erreur serveur");
-  }
-});
-
 // ---------------- BOUTONS ----------------
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isButton()) return;
