@@ -1,3 +1,11 @@
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
 const {
   Client,
   GatewayIntentBits,
@@ -13,8 +21,11 @@ const {
 const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
 
-app.use(cors());
-app.use(express.json());
+// =====================
+// CONFIG
+// =====================
+const STAFF_CHANNEL_ID = "1522304854310256680";
+const LOG_CHANNEL_ID = "1522335394522333275";
 
 // =====================
 // DISCORD BOT
