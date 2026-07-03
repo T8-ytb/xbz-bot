@@ -23,7 +23,6 @@ const TOKEN = process.env.TOKEN;
 const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
 
-const app = express();
 app.use(bodyParser.json());
 
 app.post("/recrutement", async (req, res) => {
