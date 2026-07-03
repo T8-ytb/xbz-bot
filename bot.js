@@ -7,6 +7,34 @@ app.use(express.json());
 const { Client, GatewayIntentBits } = require("discord.js");
 
 const client = new Client({
+  app.post("/recrutement", async (req, res) => {
+  const data = req.body;
+
+  const channel = client.channels.cache.get("ID_DU_SALON_RECRUTEMENT");
+
+  if (!channel) return res.status(500).send("Salon introuvable");
+
+  const embed = {
+    title: "🦇 Nouvelle candidature XBZ",
+    color: 0xff7a00,
+    fields: [
+      { name: "Nom", value: data.nom || "N/A" },
+      { name: "Âge", value: data.age || "N/A" },
+      { name: "Pays résidence", value: data.pays1 || "N/A" },
+      { name: "Pays naissance", value: data.pays2 || "N/A" },
+      { name: "Discord", value: data.discord || "N/A" },
+      { name: "Pseudo", value: data.pseudo || "N/A" },
+      { name: "Jeu", value: data.jeu || "N/A" },
+      { name: "Rang", value: data.rang || "N/A" },
+      { name: "Expérience", value: data.exp || "N/A" },
+      { name: "Motivation", value: data.motiv || "N/A" }
+    ]
+  };
+
+  channel.send({ embeds: [embed] });
+
+  res.sendStatus(200);
+});
   intents: [GatewayIntentBits.Guilds]
 });
 
@@ -85,4 +113,9 @@ client.login(process.env.TOKEN);
 
 app.listen(3000, () => {
   console.log("🔥 Bot XBZ actif sur port 3000");
+});
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("🌐 Panel XBZ actif sur port", PORT);
 });
