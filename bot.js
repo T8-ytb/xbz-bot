@@ -30,7 +30,7 @@ client.on("ready", () => {
 
 // ---------------- RECRUTEMENT API ----------------
 app.post("/recrutement", async (req, res) => {
-  try {
+  try {console.log("📩 DATA REÇUE :", req.body);
     const data = req.body;
 
     const id = "XBZ-" + Date.now();
@@ -82,7 +82,6 @@ app.post("/recrutement", async (req, res) => {
     res.status(500).send("Erreur serveur");
   }
 });
-console.log("📩 DATA REÇUE :", req.body);
 console.log("📢 ENVOI SALON :", STAFF_CHANNEL_ID);
 // ---------------- BOUTONS STAFF ----------------
 client.on("interactionCreate", async (interaction) => {
