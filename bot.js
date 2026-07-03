@@ -10,7 +10,7 @@ const client = new Client({
   app.post("/recrutement", async (req, res) => {
   const data = req.body;
 
-  const channel = client.channels.cache.get("ID_DU_SALON_RECRUTEMENT");
+  const channel = client.channels.cache.get("1522304854310256680");
 
   if (!channel) return res.status(500).send("Salon introuvable");
 
