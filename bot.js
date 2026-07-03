@@ -63,7 +63,7 @@ client.on("interactionCreate", async interaction => {
 
 console.log("TOKEN =", process.env.TOKEN);
 
-client.on("ready", () => {
+client.on("clientReady", () => {
   console.log("🟢 CONNECTÉ DISCORD :", client.user.tag);
 });
 
