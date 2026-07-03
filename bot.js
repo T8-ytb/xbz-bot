@@ -29,46 +29,47 @@ client.on("ready", () => {
 
 // ------------------- API RECRUTEMENT -------------------
 app.post("/recrutement", async (req, res) => {
-  try {
-    const data = req.body;
+  const data = req.body;
 
-    const embed = new EmbedBuilder()
-      .setTitle("🦇 CANDIDATURE XBZ")
-      .setColor(0xff7a00)
-      .addFields(
-        { name: "Nom", value: data.nom || "N/A" },
-        { name: "Âge", value: data.age || "N/A" },
-        { name: "Pays résidence", value: data.pays1 || "N/A" },
-        { name: "Pays naissance", value: data.pays2 || "N/A" },
-        { name: "Discord", value: data.discord || "N/A" },
-        { name: "Pseudo", value: data.pseudo || "N/A" },
-        { name: "Jeu", value: data.jeu || "N/A" },
-        { name: "Rang", value: data.rang || "N/A" },
-        { name: "Expérience", value: data.exp || "N/A" },
-        { name: "Motivation", value: data.motiv || "N/A" }
-      );
+  const id = "XBZ-" + Date.now();
 
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("accept")
-        .setLabel("Accepter")
-        .setStyle(ButtonStyle.Success),
-
-      new ButtonBuilder()
-        .setCustomId("refuse")
-        .setLabel("Refuser")
-        .setStyle(ButtonStyle.Danger)
+  const embed = new EmbedBuilder()
+    .setTitle("🦇 CANDIDATURE XBZ")
+    .setColor(0xff7a00)
+    .addFields(
+      { name: "ID", value: id },
+      { name: "Nom", value: data.nom || "N/A" },
+      { name: "Âge", value: data.age || "N/A" },
+      { name: "Pays résidence", value: data.pays1 || "N/A" },
+      { name: "Pays naissance", value: data.pays2 || "N/A" },
+      { name: "Discord", value: data.discord || "N/A" },
+      { name: "Pseudo", value: data.pseudo || "N/A" },
+      { name: "Jeu", value: data.jeu || "N/A" },
+      { name: "Rang", value: data.rang || "N/A" },
+      { name: "Motivation", value: data.motiv || "N/A" }
     );
 
-    const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`accept_${id}`)
+      .setLabel("Accepter")
+      .setStyle(ButtonStyle.Success),
 
-    await channel.send({
-      embeds: [embed],
-      components: [row]
-    });
+    new ButtonBuilder()
+      .setCustomId(`refuse_${id}`)
+      .setLabel("Refuser")
+      .setStyle(ButtonStyle.Danger)
+  );
 
-    res.sendStatus(200);
+  const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
 
+  await channel.send({
+    embeds: [embed],
+    components: [row]
+  });
+
+  res.sendStatus(200);
+});
   } catch (err) {
     console.log(err);
     res.status(500).send("Erreur serveur");
