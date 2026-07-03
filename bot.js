@@ -42,48 +42,26 @@ app.post("/recrutement", async (req, res) => {
 
     const id = "XBZ-" + Date.now();
 
-    const embed = new EmbedBuilder()
-      .setTitle("🦇 CANDIDATURE XBZ")
-      .setColor(0xff7a00)
-      .addFields(
-        { name: "ID", value: id },
-        { name: "Nom", value: data.nom || "N/A" },
-        { name: "Âge", value: data.age || "N/A" },
-        { name: "Discord", value: data.discord || "N/A" },
-        { name: "Pseudo", value: data.pseudo || "N/A" },
-        { name: "Jeu", value: data.jeu || "N/A" },
-        { name: "Rang", value: data.rang || "N/A" },
-        { name: "Motivation", value: data.motiv || "N/A" }
-      );
-
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`accept_${id}`)
-        .setLabel("Accepter")
-        .setStyle(ButtonStyle.Success),
-
-      new ButtonBuilder()
-        .setCustomId(`refuse_${id}`)
-        .setLabel("Refuser")
-        .setStyle(ButtonStyle.Danger),
-
-      new ButtonBuilder()
-        .setCustomId(`interview_${id}`)
-        .setLabel("Entretien")
-        .setStyle(ButtonStyle.Secondary)
-    );
-
     const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
 
     if (!channel) {
-      console.log("❌ Salon introuvable !");
+      console.log("❌ Salon introuvable");
       return res.sendStatus(500);
     }
 
     await channel.send({
-      embeds: [embed],
-      components: [row]
+      content: `🦇 Nouvelle candidature reçue (${id})`
     });
+
+    console.log("📨 MESSAGE ENVOYÉ DISCORD");
+
+    return res.sendStatus(200);
+
+  } catch (err) {
+    console.error("❌ ERREUR :", err);
+    return res.sendStatus(500);
+  }
+});
 
     console.log("📨 ENVOYÉ SUR DISCORD");
 
