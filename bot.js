@@ -1,15 +1,27 @@
 require("./server");
-const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const express = require("express");
+const app = express();
+
+const { Client, GatewayIntentBits } = require("discord.js");
+
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds]
+});
+
+app.get("/", (req, res) => {
+  res.send("XBZ PANEL ONLINE ✔");
+});
+
+app.listen(process.env.PORT, () => {
+  console.log("Panel OK");
+});
+
+client.login(process.env.TOKEN);
 const bodyParser = require("body-parser");
 
 const TOKEN = process.env.TOKEN;
 const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
-
-const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
-});
 
 const app = express();
 app.use(bodyParser.json());
