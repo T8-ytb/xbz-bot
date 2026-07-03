@@ -61,7 +61,13 @@ client.on("interactionCreate", async interaction => {
   }
 });
 
-client.login(TOKEN);
+console.log("TOKEN =", process.env.TOKEN);
+
+client.on("ready", () => {
+  console.log("🟢 CONNECTÉ DISCORD :", client.user.tag);
+});
+
+client.login(process.env.TOKEN);
 
 app.listen(3000, () => {
   console.log("🔥 Bot XBZ actif sur port 3000");
