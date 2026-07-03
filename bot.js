@@ -14,6 +14,7 @@ const {
 const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
 
+app.use(cors());
 app.use(express.json());
 
 // =====================
