@@ -154,17 +154,41 @@ client.on("interactionCreate", async (interaction) => {
     // =====================
     // ACCEPTER
     // =====================
-    if (action === "accept") {
-      await interaction.update({
-        content: `🟢 CANDIDATURE **${id}** ACCEPTÉE par ${interaction.user.tag}`,
-        components: []
-      });
+   if (action === "accept") {
 
-      if (logChannel) {
-        logChannel.send(`✔ Candidature **${id}** ACCEPTÉE`);
-      }
-      return;
-    }
+  await interaction.update({
+    content: `🟢 CANDIDATURE **${id}** ACCEPTÉE par ${interaction.user.tag}`,
+    components: []
+  });
+
+  if (logChannel) {
+    logChannel.send(`✔ Candidature **${id}** ACCEPTÉE`);
+  }
+
+  // 🔥 ICI TU AJOUTES L’ANNONCE
+  const announceChannel = interaction.guild.channels.cache.get(STAFF_CHANNEL_ID);
+
+  if (announceChannel) {
+    const pseudo = data?.pseudo || "Un joueur";
+
+    announceChannel.send({
+      embeds: [{
+        color: 0xff7a00,
+        title: "🎉 NOUVELLE RECRUE XBZ ESPORT",
+        description:
+          `🔥 **Félicitations à ${pseudo} !**\n\n` +
+          `🟢 Il vient d’être **accepté dans la structure XBZ**.\n\n` +
+          `🎮 Bienvenue dans l’équipe compétitive !`,
+        footer: {
+          text: "XBZ Esport"
+        },
+        timestamp: new Date()
+      }]
+    });
+  }
+
+  return;
+}
 
     // =====================
     // REFUSER
