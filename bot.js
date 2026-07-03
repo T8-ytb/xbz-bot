@@ -2,6 +2,8 @@ require("./server");
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 const { Client, GatewayIntentBits } = require("discord.js");
 
 const client = new Client({
