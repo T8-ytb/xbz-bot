@@ -138,3 +138,62 @@ app.listen(PORT, () => {
 // LOGIN DISCORD
 // =====================
 client.login(process.env.TOKEN);
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  const [action, id] = interaction.customId.split("_");
+
+  const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
+
+  try {
+
+    // =====================
+    // ACCEPTER
+    // =====================
+    if (action === "accept") {
+      await interaction.update({
+        content: `🟢 CANDIDATURE **${id}** ACCEPTÉE par ${interaction.user.tag}`,
+        components: []
+      });
+
+      if (logChannel) {
+        logChannel.send(`✔ Candidature **${id}** ACCEPTÉE`);
+      }
+    }
+
+    // =====================
+    // REFUSER
+    // =====================
+    if (action === "refuse") {
+      await interaction.update({
+        content: `🔴 CANDIDATURE **${id}** REFUSÉE par ${interaction.user.tag}`,
+        components: []
+      });
+
+      if (logChannel) {
+        logChannel.send(`❌ Candidature **${id}** REFUSÉE`);
+      }
+    }
+
+    // =====================
+    // ENTRETIEN
+    // =====================
+    if (action === "interview") {
+      await interaction.update({
+        content: `🟡 ENTRETIEN demandé pour **${id}** par ${interaction.user.tag}`,
+        components: []
+      });
+
+      if (logChannel) {
+        logChannel.send(`🟡 Entretien demandé pour **${id}**`);
+      }
+    }
+
+  } catch (err) {
+    console.error("❌ BUTTON ERROR :", err);
+    await interaction.reply({
+      content: "❌ Erreur lors du traitement du bouton",
+      ephemeral: true
+    });
+  }
+});
