@@ -1,4 +1,4 @@
-require("./server");
+require("dotenv").config();
 
 const express = require("express");
 const app = express();
@@ -14,46 +14,77 @@ const {
 
 app.use(express.json());
 
-// IDs
+// IDS
 const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
 
-// Client Discord
+// DISCORD CLIENT
 const client = new Client({
   intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages
+    GatewayIntentBits.Guilds
   ]
 });
 
-// ---------------- READY ----------------
-client.on("ready", () => {
-  console.log("🟢 CONNECTÉ DISCORD :", client.user.tag);
+// READY
+client.once("ready", () => {
+  console.log("🟢 BOT CONNECTÉ :", client.user.tag);
 });
 
-// ---------------- API RECRUTEMENT ----------------
+// =======================
+// ROUTE RECRUTEMENT
+// =======================
 app.post("/recrutement", async (req, res) => {
   try {
 
-    console.log("🔥 REQUÊTE REÇUE !");
-    console.log("📩 DATA :", req.body);
+    console.log("🔥 CANDIDATURE REÇUE :", req.body);
 
     const data = req.body;
 
     const id = "XBZ-" + Date.now();
 
+    const embed = new EmbedBuilder()
+      .setTitle("🦇 NOUVELLE CANDIDATURE XBZ")
+      .setColor(0xff7a00)
+      .addFields(
+        { name: "ID", value: id },
+        { name: "Nom", value: data.nom || "N/A" },
+        { name: "Âge", value: data.age || "N/A" },
+        { name: "Discord", value: data.discord || "N/A" },
+        { name: "Pseudo", value: data.pseudo || "N/A" },
+        { name: "Motivation", value: data.motiv || "N/A" }
+      );
+
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`accept_${id}`)
+        .setLabel("Accepter")
+        .setStyle(ButtonStyle.Success),
+
+      new ButtonBuilder()
+        .setCustomId(`refuse_${id}`)
+        .setLabel("Refuser")
+        .setStyle(ButtonStyle.Danger)
+    );
+
     const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
 
     if (!channel) {
-      console.log("❌ Salon introuvable");
+      console.log("❌ Salon recrutement introuvable");
       return res.sendStatus(500);
     }
 
     await channel.send({
-      content: `🦇 Nouvelle candidature reçue (${id})`
+      embeds: [embed],
+      components: [row]
     });
 
-    console.log("📨 MESSAGE ENVOYÉ DISCORD");
+    // LOGS
+    const log = await client.channels.fetch(LOG_CHANNEL_ID);
+    if (log) {
+      log.send(`📩 Nouvelle candidature : **${data.nom || "inconnu"}**`);
+    }
+
+    console.log("📨 ENVOYÉ SUR DISCORD");
 
     return res.sendStatus(200);
 
@@ -62,55 +93,18 @@ app.post("/recrutement", async (req, res) => {
     return res.sendStatus(500);
   }
 });
-// ---------------- BOUTONS ----------------
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isButton()) return;
 
-  const [action, id] = interaction.customId.split("_");
-
-  const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
-
-  if (!logChannel) return;
-
-  if (action === "accept") {
-    await interaction.update({
-      content: `🟢 CANDIDATURE ${id} ACCEPTÉE par ${interaction.user.tag}`,
-      components: []
-    });
-
-    await logChannel.send(`✔ Candidature ${id} ACCEPTÉE`);
-  }
-
-  if (action === "refuse") {
-    await interaction.update({
-      content: `🔴 CANDIDATURE ${id} REFUSÉE par ${interaction.user.tag}`,
-      components: []
-    });
-
-    await logChannel.send(`❌ Candidature ${id} REFUSÉE`);
-  }
-
-  if (action === "interview") {
-    await interaction.update({
-      content: `🟡 ENTRETIEN pour ${id} par ${interaction.user.tag}`,
-      components: []
-    });
-
-    await logChannel.send(`🟡 Entretien demandé`);
-  }
-});
-
-// ---------------- HOME ----------------
+// HOME
 app.get("/", (req, res) => {
-  res.send("XBZ PANEL ONLINE ✔");
+  res.send("XBZ BOT ONLINE ✔");
 });
 
-// ---------------- START ----------------
+// START SERVER
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("🌐 Panel XBZ actif sur port", PORT);
+  console.log("🌐 SERVER ON PORT", PORT);
 });
 
-// ---------------- LOGIN ----------------
+// LOGIN DISCORD
 client.login(process.env.TOKEN);
