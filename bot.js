@@ -148,9 +148,8 @@ client.on("interactionCreate", async (interaction) => {
 
   const [action, id] = interaction.customId.split("_");
 
-  const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
-
   try {
+    const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
 
     // =====================
     // ACCEPTER
@@ -164,6 +163,7 @@ client.on("interactionCreate", async (interaction) => {
       if (logChannel) {
         logChannel.send(`✔ Candidature **${id}** ACCEPTÉE`);
       }
+      return;
     }
 
     // =====================
@@ -178,6 +178,7 @@ client.on("interactionCreate", async (interaction) => {
       if (logChannel) {
         logChannel.send(`❌ Candidature **${id}** REFUSÉE`);
       }
+      return;
     }
 
     // =====================
@@ -192,13 +193,18 @@ client.on("interactionCreate", async (interaction) => {
       if (logChannel) {
         logChannel.send(`🟡 Entretien demandé pour **${id}**`);
       }
+      return;
     }
 
   } catch (err) {
     console.error("❌ BUTTON ERROR :", err);
-    await interaction.reply({
-      content: "❌ Erreur lors du traitement du bouton",
-      ephemeral: true
-    });
+
+    // IMPORTANT: éviter "interaction failed"
+    if (!interaction.replied && !interaction.deferred) {
+      await interaction.reply({
+        content: "❌ Erreur bouton (check logs Render)",
+        ephemeral: true
+      });
+    }
   }
 });
