@@ -2,7 +2,7 @@ const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const TOKEN = "MTUyMjMwODQ5MzM4ODkzOTUzNQ.GAPhtD.40gHfXU0zOv79eB8AKPsx8Vt2nQe2c1J-0BLvA";
+const TOKEN = process.env.TOKEN;
 const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
 
