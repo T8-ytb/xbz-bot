@@ -70,7 +70,29 @@ app.post("/recrutement", async (req, res) => {
       .setFooter({ text: "XBZ Recrutement System" })
       .setTimestamp();
 
-    await channel.send({ embeds: [embed] });
+    const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+
+const row = new ActionRowBuilder().addComponents(
+  new ButtonBuilder()
+    .setCustomId(`accept_${id}`)
+    .setLabel("✅ Accepter")
+    .setStyle(ButtonStyle.Success),
+
+  new ButtonBuilder()
+    .setCustomId(`refuse_${id}`)
+    .setLabel("❌ Refuser")
+    .setStyle(ButtonStyle.Danger),
+
+  new ButtonBuilder()
+    .setCustomId(`interview_${id}`)
+    .setLabel("🟡 Entretien")
+    .setStyle(ButtonStyle.Secondary)
+);
+
+await channel.send({
+  embeds: [embed],
+  components: [row]
+});
 
     // =========================
     // LOGS COMPLETS
