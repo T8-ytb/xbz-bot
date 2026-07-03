@@ -19,9 +19,11 @@ const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages
+  ]
 });
-
 // ---------------- READY ----------------
 client.on("ready", () => {
   console.log("🟢 CONNECTÉ DISCORD :", client.user.tag);
