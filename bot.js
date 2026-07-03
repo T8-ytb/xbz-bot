@@ -14,23 +14,30 @@ const {
 
 app.use(express.json());
 
+// IDs
 const STAFF_CHANNEL_ID = "1522304854310256680";
 const LOG_CHANNEL_ID = "1522335394522333275";
 
+// Client Discord
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages
   ]
 });
+
 // ---------------- READY ----------------
 client.on("ready", () => {
   console.log("🟢 CONNECTÉ DISCORD :", client.user.tag);
 });
 
-// ---------------- RECRUTEMENT API ----------------
+// ---------------- API RECRUTEMENT ----------------
 app.post("/recrutement", async (req, res) => {
-  try {console.log("📩 DATA REÇUE :", req.body);
+  try {
+
+    console.log("🔥 REQUÊTE REÇUE !");
+    console.log("📩 DATA :", req.body);
+
     const data = req.body;
 
     const id = "XBZ-" + Date.now();
@@ -42,8 +49,6 @@ app.post("/recrutement", async (req, res) => {
         { name: "ID", value: id },
         { name: "Nom", value: data.nom || "N/A" },
         { name: "Âge", value: data.age || "N/A" },
-        { name: "Pays résidence", value: data.pays1 || "N/A" },
-        { name: "Pays naissance", value: data.pays2 || "N/A" },
         { name: "Discord", value: data.discord || "N/A" },
         { name: "Pseudo", value: data.pseudo || "N/A" },
         { name: "Jeu", value: data.jeu || "N/A" },
@@ -70,20 +75,27 @@ app.post("/recrutement", async (req, res) => {
 
     const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
 
+    if (!channel) {
+      console.log("❌ Salon introuvable !");
+      return res.sendStatus(500);
+    }
+
     await channel.send({
       embeds: [embed],
       components: [row]
     });
 
+    console.log("📨 ENVOYÉ SUR DISCORD");
+
     res.sendStatus(200);
 
   } catch (err) {
-    console.error(err);
+    console.error("❌ ERREUR :", err);
     res.status(500).send("Erreur serveur");
   }
 });
-console.log("📢 ENVOI SALON :", STAFF_CHANNEL_ID);
-// ---------------- BOUTONS STAFF ----------------
+
+// ---------------- BOUTONS ----------------
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isButton()) return;
 
@@ -91,38 +103,37 @@ client.on("interactionCreate", async (interaction) => {
 
   const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
 
-  // ACCEPT
+  if (!logChannel) return;
+
   if (action === "accept") {
     await interaction.update({
       content: `🟢 CANDIDATURE ${id} ACCEPTÉE par ${interaction.user.tag}`,
       components: []
     });
 
-    await logChannel.send(`✔ Candidature ${id} ACCEPTÉE par ${interaction.user.tag}`);
+    await logChannel.send(`✔ Candidature ${id} ACCEPTÉE`);
   }
 
-  // REFUSE
   if (action === "refuse") {
     await interaction.update({
       content: `🔴 CANDIDATURE ${id} REFUSÉE par ${interaction.user.tag}`,
       components: []
     });
 
-    await logChannel.send(`❌ Candidature ${id} REFUSÉE par ${interaction.user.tag}`);
+    await logChannel.send(`❌ Candidature ${id} REFUSÉE`);
   }
 
-  // INTERVIEW
   if (action === "interview") {
     await interaction.update({
-      content: `🟡 ENTRETIEN DEMANDÉ pour ${id} par ${interaction.user.tag}`,
+      content: `🟡 ENTRETIEN pour ${id} par ${interaction.user.tag}`,
       components: []
     });
 
-    await logChannel.send(`🟡 Entretien demandé pour ${id} par ${interaction.user.tag}`);
+    await logChannel.send(`🟡 Entretien demandé`);
   }
 });
 
-// ---------------- WEB PANEL ----------------
+// ---------------- HOME ----------------
 app.get("/", (req, res) => {
   res.send("XBZ PANEL ONLINE ✔");
 });
