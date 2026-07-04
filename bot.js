@@ -199,11 +199,32 @@ client.on("interactionCreate", async (interaction) => {
         components: []
       });
 
-      if (logChannel) {
-        logChannel.send(`❌ Candidature **${id}** REFUSÉE`);
-      }
-      return;
-    }
+     if (action === "interview") {
+
+  const newRow = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`accept_${id}`)
+      .setLabel("✅ Accepter")
+      .setStyle(ButtonStyle.Success),
+
+    new ButtonBuilder()
+      .setCustomId(`refuse_${id}`)
+      .setLabel("❌ Refuser")
+      .setStyle(ButtonStyle.Danger)
+  );
+
+  await interaction.update({
+    content: `🟡 CANDIDATURE **${id}** EN ENTRETEN :
+
+👤 Demandée par ${interaction.user.tag}
+⏳ Statut : en attente d’entretien`,
+    components: [newRow]
+  });
+
+  if (logChannel) {
+    logChannel.send(`🟡 Entretien EN COURS pour **${id}**`);
+  }
+}
 
     // =====================
     // ENTRETIEN
