@@ -152,46 +152,22 @@ client.on("interactionCreate", async (interaction) => {
     const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
 
     // =====================
-    // ACCEPTER
+    // ACCEPT
     // =====================
-   if (action === "accept") {
+    if (action === "accept") {
+      await interaction.update({
+        content: `🟢 CANDIDATURE **${id}** ACCEPTÉE par ${interaction.user.tag}`,
+        components: []
+      });
 
-  await interaction.update({
-    content: `🟢 CANDIDATURE **${id}** ACCEPTÉE par ${interaction.user.tag}`,
-    components: []
-  });
-
-  if (logChannel) {
-    logChannel.send(`✔ Candidature **${id}** ACCEPTÉE`);
-  }
-
-  // 🔥 ICI TU AJOUTES L’ANNONCE
-  const announceChannel = interaction.guild.channels.cache.get(STAFF_CHANNEL_ID);
-
-  if (announceChannel) {
-    const pseudo = data?.pseudo || "Un joueur";
-
-    announceChannel.send({
-      embeds: [{
-        color: 0xff7a00,
-        title: "🎉 NOUVELLE RECRUE XBZ ESPORT",
-        description:
-          `🔥 **Félicitations à ${pseudo} !**\n\n` +
-          `🟢 Il vient d’être **accepté dans la structure XBZ**.\n\n` +
-          `🎮 Bienvenue dans l’équipe compétitive !`,
-        footer: {
-          text: "XBZ Esport"
-        },
-        timestamp: new Date()
-      }]
-    });
-  }
-
-  return;
-}
+      if (logChannel) {
+        logChannel.send(`✔ Candidature **${id}** ACCEPTÉE`);
+      }
+      return;
+    }
 
     // =====================
-    // REFUSER
+    // REFUSE
     // =====================
     if (action === "refuse") {
       await interaction.update({
@@ -199,55 +175,50 @@ client.on("interactionCreate", async (interaction) => {
         components: []
       });
 
-     if (action === "interview") {
-
-  const newRow = new ActionRowBuilder().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`accept_${id}`)
-      .setLabel("✅ Accepter")
-      .setStyle(ButtonStyle.Success),
-
-    new ButtonBuilder()
-      .setCustomId(`refuse_${id}`)
-      .setLabel("❌ Refuser")
-      .setStyle(ButtonStyle.Danger)
-  );
-
-  await interaction.update({
-    content: `🟡 CANDIDATURE **${id}** EN ENTRETEN :
-
-👤 Demandée par ${interaction.user.tag}
-⏳ Statut : en attente d’entretien`,
-    components: [newRow]
-  });
-
-  if (logChannel) {
-    logChannel.send(`🟡 Entretien EN COURS pour **${id}**`);
-  }
-}
+      if (logChannel) {
+        logChannel.send(`❌ Candidature **${id}** REFUSÉE`);
+      }
+      return;
+    }
 
     // =====================
-    // ENTRETIEN
+    // INTERVIEW (MODE ATTENTE)
     // =====================
     if (action === "interview") {
+
+      const newRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId(`accept_${id}`)
+          .setLabel("✅ Accepter")
+          .setStyle(ButtonStyle.Success),
+
+        new ButtonBuilder()
+          .setCustomId(`refuse_${id}`)
+          .setLabel("❌ Refuser")
+          .setStyle(ButtonStyle.Danger)
+      );
+
       await interaction.update({
-        content: `🟡 ENTRETIEN demandé pour **${id}** par ${interaction.user.tag}`,
-        components: []
+        content:
+          `🟡 CANDIDATURE **${id}** EN ENTREVUE\n\n` +
+          `👤 Demandé par ${interaction.user.tag}\n` +
+          `⏳ Statut : EN ATTENTE D'ENTRETIEN`,
+        components: [newRow]
       });
 
       if (logChannel) {
         logChannel.send(`🟡 Entretien demandé pour **${id}**`);
       }
+
       return;
     }
 
   } catch (err) {
     console.error("❌ BUTTON ERROR :", err);
 
-    // IMPORTANT: éviter "interaction failed"
     if (!interaction.replied && !interaction.deferred) {
       await interaction.reply({
-        content: "❌ Erreur bouton (check logs Render)",
+        content: "❌ Erreur bouton",
         ephemeral: true
       });
     }
