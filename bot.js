@@ -50,17 +50,19 @@ console.log("🔗 RL TRACKER :", data.rltracker);
     // ID unique propre
     const id = `XBZ-${Date.now()}`;
 
-    const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
-  const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
-   if (!logChannel) {
+    const channel = await client.channels.fetch(STAFF_CHANNEL_ID).catch(() => null);
+const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
+
+if (!channel) {
+  console.log("❌ Salon recrutement introuvable");
+  return res.status(500).send("Channel not found");
+}
+
+if (!logChannel) {
   console.log("❌ Salon LOG introuvable");
 } else {
   console.log("✅ Salon LOG trouvé");
 }
-      console.log("❌ Salon recrutement introuvable");
-      return res.status(500).send("Channel not found");
-    }
-
     // =========================
     // EMBED RECRUTEMENT (PROPRE)
     // =========================
