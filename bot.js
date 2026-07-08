@@ -120,6 +120,35 @@ await channel.send({
   embeds: [embed],
   components: [row]
 });
+    // =====================
+// LOGS COMPLETS
+// =====================
+
+if (logChannel) {
+  await logChannel.send({
+    content:
+`📩 **Nouvelle candidature reçue**
+
+🆔 ID : ${id}
+
+👤 Nom : ${data.nom || "N/A"}
+🎂 Âge : ${data.age || "N/A"}
+💬 Discord : ${data.discord || "N/A"}
+🎮 Pseudo : ${data.pseudo || "N/A"}
+🕹 Jeu : ${data.jeu || "N/A"}
+🏆 Rang : ${data.rang || "N/A"}
+
+🔗 RL Tracker :
+${data.rltracker && data.rltracker.startsWith("http")
+? data.rltracker
+: "Non renseigné"}
+
+🧠 Motivation :
+${data.motiv || "N/A"}`
+  });
+
+  console.log("📜 LOG ENVOYÉ");
+}
    console.log("📨 CANDIDATURE ENVOYÉE SUR DISCORD");
 
 return res.status(200).send("OK");
