@@ -117,33 +117,53 @@ await channel.send({
   components: [row]
 });
 // =========================
-// CRÉATION SALON ENTRETIEN PRIVÉ
+// CRÉATION SALON PRIVÉ ENTRETIEN
 // =========================
 
 const guild = channel.guild;
 
-const category = channel.parent; // garde la même catégorie que recrutement
-
 const interviewChannel = await guild.channels.create({
-  name: `entretien-${data.pseudo.toLowerCase()}`,
+  name: `🟡・entretien-${data.pseudo.toLowerCase()}`,
   type: 0,
-  parent: category?.id,
+  parent: RECRUIT_CATEGORY_ID,
 
   permissionOverwrites: [
     {
       id: guild.roles.everyone.id,
-      deny: ["ViewChannel"]
+      deny: [
+        "ViewChannel"
+      ]
     },
 
     {
-      id: client.user.id,
-      allow: ["ViewChannel", "SendMessages"]
-    },
-
-    {
-      id: STAFF_CHANNEL_ID,
-      allow: ["ViewChannel"]
+      id: STAFF_ROLE_ID,
+      allow: [
+        "ViewChannel",
+        "SendMessages",
+        "ReadMessageHistory"
+      ]
     }
+  ]
+});
+
+
+await interviewChannel.send({
+  embeds: [
+    new EmbedBuilder()
+      .setTitle("🦇 Entretien XBZ")
+      .setColor(0x0066FF)
+      .setDescription(
+`Bienvenue dans ton entretien XBZ.
+
+👤 Candidat : **${data.nom}**
+🎮 Jeu : **${data.jeu}**
+🆔 ID candidature : **${id}**
+
+Le staff va venir discuter avec toi ici.
+
+Bonne chance 🚀`
+      )
+      .setTimestamp()
   ]
 });
     {
