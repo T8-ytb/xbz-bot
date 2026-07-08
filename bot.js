@@ -166,14 +166,7 @@ Bonne chance 🚀`
       .setTimestamp()
   ]
 });
-    {
-  id: candidateDiscordID,
-  allow: [
-    "ViewChannel",
-    "SendMessages",
-    "ReadMessageHistory"
-  ]
-}
+  
     // =========================
     // LOGS COMPLETS
     // =========================
