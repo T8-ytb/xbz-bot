@@ -127,23 +127,23 @@ const interviewChannel = await guild.channels.create({
   type: 0,
   parent: RECRUIT_CATEGORY_ID,
 
-  permissionOverwrites: [
-    {
-      id: guild.roles.everyone.id,
-      deny: [
-        "ViewChannel"
-      ]
-    },
+ permissionOverwrites: [
+  {
+    id: guild.roles.everyone.id,
+    deny: [
+      "ViewChannel"
+    ]
+  },
 
-    {
-      id: STAFF_ROLE_ID,
-      allow: [
-        "ViewChannel",
-        "SendMessages",
-        "ReadMessageHistory"
-      ]
-    }
-  ]
+  {
+    id: STAFF_ROLE_ID,
+    allow: [
+      "ViewChannel",
+      "SendMessages",
+      "ReadMessageHistory"
+    ]
+  }
+]
 });
 
 
