@@ -60,19 +60,40 @@ app.post("/recrutement", async (req, res) => {
     // =========================
     const embed = new EmbedBuilder()
       .setTitle("🦇 NOUVELLE CANDIDATURE XBZ")
-      .setColor(0xff7a00)
+     .setColor(0x0066FF)
       .setDescription(`🆔 ID : **${id}**`)
-      .addFields(
-        { name: "👤 Nom", value: data.nom || "N/A", inline: true },
-        { name: "🎂 Âge", value: data.age || "N/A", inline: true },
-        { name: "💬 Discord", value: data.discord || "N/A", inline: false },
-        { name: "🎮 Pseudo", value: data.pseudo || "N/A", inline: true },
-        { name: "🕹 Jeu", value: data.jeu || "N/A", inline: true },
-        { name: "🏆 Rang", value: data.rang || "N/A", inline: true },
-        { name: "🧠 Motivation", value: data.motiv || "N/A" }
-      )
-      .setFooter({ text: "XBZ Recrutement System" })
-      .setTimestamp();
+     const fields = [
+  { name: "👤 Nom", value: data.nom || "N/A", inline: true },
+  { name: "🎂 Âge", value: data.age || "N/A", inline: true },
+  { name: "💬 Discord", value: data.discord || "N/A", inline: false },
+  { name: "🎮 Pseudo", value: data.pseudo || "N/A", inline: true },
+  { name: "🕹 Jeu", value: data.jeu || "N/A", inline: true },
+  { name: "🏆 Rang", value: data.rang || "N/A", inline: true }
+];
+
+// Ajoute RL Tracker uniquement pour Rocket League
+if (data.jeu === "Rocket League") {
+  fields.push({
+    name: "🔗 RL Tracker",
+    value: data.rltracker
+      ? `[Voir le profil RL Tracker](${data.rltracker})`
+      : "Non renseigné",
+    inline: false
+  });
+}
+
+fields.push({
+  name: "🧠 Motivation",
+  value: data.motiv || "N/A"
+});
+
+const embed = new EmbedBuilder()
+  .setTitle("🦇 NOUVELLE CANDIDATURE XBZ")
+  .setColor(0x0066FF)
+  .setDescription(`🆔 ID : **${id}**`)
+  .addFields(fields)
+  .setFooter({ text: "XBZ Recrutement System" })
+  .setTimestamp();
 
     const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
