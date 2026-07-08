@@ -74,7 +74,7 @@ console.log("🔗 RL TRACKER :", data.rltracker);
 if (data.jeu?.trim() === "Rocket League") {
   fields.push({
     name: "🔗 RL Tracker",
-    value: data.rltracker
+    value: data.rltracker && data.rltracker.startsWith("http")
       ? `[Voir le profil RL Tracker](${data.rltracker})`
       : "Non renseigné",
     inline: false
