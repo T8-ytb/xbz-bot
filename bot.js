@@ -60,10 +60,7 @@ console.log("🔗 RL TRACKER :", data.rltracker);
     // =========================
     // EMBED RECRUTEMENT (PROPRE)
     // =========================
-    const embed = new EmbedBuilder()
-      .setTitle("🦇 NOUVELLE CANDIDATURE XBZ")
-     .setColor(0x0066FF)
-      .setDescription(`🆔 ID : **${id}**`)
+
      const fields = [
   { name: "👤 Nom", value: data.nom || "N/A", inline: true },
   { name: "🎂 Âge", value: data.age || "N/A", inline: true },
@@ -88,7 +85,13 @@ fields.push({
   name: "🧠 Motivation",
   value: data.motiv || "N/A"
 });
-
+const embed = new EmbedBuilder()
+  .setTitle("🦇 NOUVELLE CANDIDATURE XBZ")
+  .setColor(0x0066FF)
+  .setDescription(`🆔 ID : **${id}**`)
+  .addFields(fields)
+  .setFooter({ text: "XBZ Recrutement System" })
+  .setTimestamp();
     const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 const row = new ActionRowBuilder().addComponents(
