@@ -145,6 +145,14 @@ const interviewChannel = await guild.channels.create({
     }
   ]
 });
+    {
+  id: candidateDiscordID,
+  allow: [
+    "ViewChannel",
+    "SendMessages",
+    "ReadMessageHistory"
+  ]
+}
     // =========================
     // LOGS COMPLETS
     // =========================
