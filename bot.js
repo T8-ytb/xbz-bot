@@ -115,46 +115,6 @@ await channel.send({
   embeds: [embed],
   components: [row]
 });
-// =========================
-// CRÉATION SALON PRIVÉ ENTRETIEN
-// =========================
-
-/*
-const guild = channel.guild;
-
-const interviewChannel = await guild.channels.create({
-...
-});
-
-await interviewChannel.send({
-...
-});
-*/
-  
-    // =========================
-    // LOGS COMPLETS
-    // =========================
-    if (logChannel) {
-      await logChannel.send({
-        content:
-`📩 **Nouvelle candidature reçue**
-
-🆔 ID : ${id}
-👤 Nom : ${data.nom || "N/A"}
-🎮 Pseudo : ${data.pseudo || "N/A"}
-🎂 Âge : ${data.age || "N/A"}`
-      });
-    }
-
-    console.log("📨 ENVOYÉ SUR DISCORD");
-
-    return res.status(200).send("OK");
-
-  } catch (err) {
-    console.error("❌ ERREUR API :", err);
-    return res.status(500).send("ERROR");
-  }
-});
 
 // =====================
 // HOME ROUTE
