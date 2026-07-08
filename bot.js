@@ -43,6 +43,8 @@ app.post("/recrutement", async (req, res) => {
     console.log("🔥 REQUÊTE REÇUE :", req.body);
 
     const data = req.body;
+    console.log("🎮 JEU :", data.jeu);
+console.log("🔗 RL TRACKER :", data.rltracker);
 
     // ID unique propre
     const id = `XBZ-${Date.now()}`;
@@ -72,7 +74,7 @@ app.post("/recrutement", async (req, res) => {
 ];
 
 // Ajoute RL Tracker uniquement pour Rocket League
-if (data.jeu === "Rocket League") {
+if (data.jeu?.trim() === "Rocket League") {
   fields.push({
     name: "🔗 RL Tracker",
     value: data.rltracker
