@@ -52,7 +52,11 @@ console.log("🔗 RL TRACKER :", data.rltracker);
 
     const channel = await client.channels.fetch(STAFF_CHANNEL_ID);
   const logChannel = await client.channels.fetch(LOG_CHANNEL_ID).catch(() => null);
-    if (!channel) {
+   if (!logChannel) {
+  console.log("❌ Salon LOG introuvable");
+} else {
+  console.log("✅ Salon LOG trouvé");
+}
       console.log("❌ Salon recrutement introuvable");
       return res.status(500).send("Channel not found");
     }
