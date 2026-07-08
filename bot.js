@@ -123,7 +123,9 @@ await channel.send({
 const guild = channel.guild;
 
 const interviewChannel = await guild.channels.create({
-  name: `🟡・entretien-${data.pseudo.toLowerCase()}`,
+ name: `entretien-${data.pseudo
+.toLowerCase()
+.replace(/[^a-z0-9]/g, "")}`
   type: 0,
   parent: RECRUIT_CATEGORY_ID,
 
