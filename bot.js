@@ -93,7 +93,6 @@ const embed = new EmbedBuilder()
   .addFields(fields)
   .setFooter({ text: "XBZ Recrutement System" })
   .setTimestamp();
-    const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 const row = new ActionRowBuilder().addComponents(
   new ButtonBuilder()
