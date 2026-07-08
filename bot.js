@@ -115,6 +115,19 @@ await channel.send({
   embeds: [embed],
   components: [row]
 });
+    console.log("📨 CANDIDATURE ENVOYÉE SUR DISCORD");
+
+    return res.status(200).send("OK");
+
+  } catch (err) {
+
+    console.error("❌ ERREUR API :", err);
+
+    return res.status(500).send("ERROR");
+
+  }
+});
+
 
 // =====================
 // HOME ROUTE
