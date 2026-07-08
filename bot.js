@@ -115,7 +115,36 @@ await channel.send({
   embeds: [embed],
   components: [row]
 });
+// =========================
+// CRÉATION SALON ENTRETIEN PRIVÉ
+// =========================
 
+const guild = channel.guild;
+
+const category = channel.parent; // garde la même catégorie que recrutement
+
+const interviewChannel = await guild.channels.create({
+  name: `entretien-${data.pseudo.toLowerCase()}`,
+  type: 0,
+  parent: category?.id,
+
+  permissionOverwrites: [
+    {
+      id: guild.roles.everyone.id,
+      deny: ["ViewChannel"]
+    },
+
+    {
+      id: client.user.id,
+      allow: ["ViewChannel", "SendMessages"]
+    },
+
+    {
+      id: STAFF_CHANNEL_ID,
+      allow: ["ViewChannel"]
+    }
+  ]
+});
     // =========================
     // LOGS COMPLETS
     // =========================
